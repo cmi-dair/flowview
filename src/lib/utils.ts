@@ -1,8 +1,8 @@
-import type { WfNodeData } from "./types";
 
-export function backref_nodes(node: WfNodeData) {
-    node?.nodes.map((x) => {
-        backref_nodes(x);
-        x.parent = node;
-    });
+export function keyEventWrap<T>(handler: () => T, keyCode = 13): (ev: KeyboardEvent) => T | undefined {
+    return (ev: KeyboardEvent) => {
+        if (ev.keyCode === keyCode) {
+            return handler();
+        }
+    }
 }
