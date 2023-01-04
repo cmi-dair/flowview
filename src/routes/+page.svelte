@@ -84,7 +84,7 @@
 
 <div class="container mx-auto flex flex-col h-screen p-0 m-0">
 	<div class="text-xl mt-2 flex flex-row">
-		<span class="font-medium">&#129497; Workflow explorer</span>
+		<span class="font-medium">&#129497; FlowView</span>
 		{#if $wf_data}
 			<span class="mx-2">&minus;</span><span class="font-light">{$wf_data?.meta.pipeline_name}</span
 			>
