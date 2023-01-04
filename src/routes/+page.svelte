@@ -1,58 +1,15 @@
 <script lang="ts">
-	import type { WfEdgeData, WfNodeData } from '../lib/types';
+	import type { WfData, WfEdgeData, WfNodeData } from '../lib/types';
 	import WfNode from '../lib/WfNode.svelte';
 	import InspectCard from '../lib/InspectCard.svelte';
 	import SearchBar from '../lib/SearchBar.svelte';
-	import { wf_data, node_selected } from '../lib/stores';
-	import { backref_nodes } from '../lib/utils';
+	import { wf_raw, wf_data, node_selected } from '../lib/stores';
+	import { type WfTree, filter_node_copy, load_workflow } from '../lib/wftree';
+    import { keyEventWrap } from '../lib/utils';
 
-	function filter_node(node: WfNodeData, search_str: string): WfNodeData {
-		node.nodes = node.nodes.filter((x) => {
-			if (x.nodes.length > 0) {
-				x.nodes = filter_node(x, search_str).nodes;
-				if (x.nodes.length > 0) return true;
-			}
-			return x.name.toLowerCase().includes(search_str);
-		});
-		return node;
-	}
+	import { DateTime } from 'luxon'
+	import ObjInspectTable from '$lib/ObjInspectTable.svelte';
 
-	function filter_node_copy(node: WfNodeData, search_str: string): WfNodeData {
-		if (search_str == '') {
-			return node;
-		}
-		let ret: WfNodeData = structuredClone(node);
-		return filter_node(ret, search_str.toLocaleLowerCase());
-	}
-
-	function find_parents(node: WfNodeData): WfNodeData[] {
-		const ret: WfNodeData[] = [];
-		while (node.parent) {
-			ret.unshift(node.parent);
-			node = node.parent;
-		}
-		return ret;
-	}
-
-	function find_fullname_child(node: WfNodeData, fullname: string): WfNodeData | undefined {
-		return node.nodes.find((x) => x.fullname === fullname);
-	}
-
-	function find_deps(node: WfNodeData, reverse: boolean = false): WfNodeData[] {
-		if (!node.parent) return [];
-		const parent = node.parent;
-		const edge_dep_t = (x: WfEdgeData) => x.fullname_target;
-		const edge_dep_o = (x: WfEdgeData) => x.fullname_origin;
-
-		const edge_dep = reverse ? edge_dep_t : edge_dep_o;
-		const edge_dep_r = reverse ? edge_dep_o : edge_dep_t;
-
-		return parent.edges
-			.filter((x) => edge_dep_r(x) === node.fullname)
-			.map((x) => edge_dep(x))
-			.map((x) => find_fullname_child(parent, x))
-			.filter((x) => x !== undefined) as WfNodeData[];
-	}
 
 	let files: any;
 
@@ -60,16 +17,14 @@
 		if (!e.target) return;
 		const file = (e.target as HTMLInputElement)?.files?.[0];
 		if (!file) return;
-		console.log(file.name);
 
 		const reader = new FileReader();
 		reader.onload = (event) => {
 			if (!(event.target?.result && typeof event.target.result === 'string')) return;
-			const obj = JSON.parse(event.target.result);
-			if (obj?.version?.workflow && obj.workflow) {
+			const wf_new = load_workflow(event.target.result);
+			if (wf_new) {
 				console.log('Load workflow:', file.name);
-				backref_nodes(obj.workflow);
-				$wf_data = obj;
+				$wf_raw = wf_new;
 			} else {
 				alert('Not a valid workflow file! ' + file.name);
 			}
@@ -79,15 +34,20 @@
 
 	let search = '';
 
-	$: root_filtered = $wf_data ? filter_node_copy($wf_data.workflow, search) : undefined;
+	$: root_filtered = $wf_data ? filter_node_copy($wf_data, search) : undefined;
+	$: meta_datetime = $wf_raw ? DateTime.fromISO($wf_raw.meta.time) : undefined;
+	
 </script>
 
-<div class="container mx-auto flex flex-col h-screen p-0 m-0">
-	<div class="text-xl mt-2 flex flex-row">
+<div class="flex flex-col h-screen p-0 my-0 mx-2">
+	<div class="text-xl mt-2 flex flex-row items-baseline">
 		<span class="font-medium">&#129497; FlowView</span>
-		{#if $wf_data}
-			<span class="mx-2">&minus;</span><span class="font-light">{$wf_data?.meta.pipeline_name}</span
-			>
+		{#if $wf_raw}
+			<span class="mx-2">&minus;</span>
+			<span class="font-light">{$wf_raw.meta.pipeline_name}</span>
+			<span class="mx-2">&minus;</span>
+			<span class="font-light">{$wf_raw.meta.stage ?? 'pre'}</span>
+			<span class="ml-2 font-light text-sm">({meta_datetime?.toRelative()})</span>
 		{/if}
 
 		<div class="flex-1" />
@@ -120,71 +80,48 @@
 				<div class="flex flex-col h-full overflow-auto">
 					{#if $node_selected}
 						<div>
-							{#each find_parents($node_selected) as parent}
+							{#each $node_selected.find_parents() as parent}
 								<span
-									on:click={() => ($node_selected = parent)}
+								    on:click={() => ($node_selected = parent)}
+								    on:keydown={keyEventWrap(() => ($node_selected = parent))}
 									class="font-light text-slate-600 hover:text-black hover:font-medium cursor-pointer"
-									>{parent.name}</span
+									>{parent.data.node.name}</span
 								>
 								<span class="text-slate-400 mx-2">/</span>
 							{/each}
 						</div>
-						<h2 class="text-xl font-medium">{$node_selected.name}</h2>
+						<h2 class="text-xl font-medium">{$node_selected.data.node.name}</h2>
 
 						<div class="flex flex-col overflow-auto">
-							<InspectCard title="Dependencies">
-								{#each find_deps($node_selected) as dep, idx}
+							<InspectCard title="Input Nodes">
+								{#each $node_selected.data.input_refs as dep, idx}
 									<div
 										class="break-after-auto hover:font-medium cursor-pointer"
 										on:click={() => ($node_selected = dep)}
+										on:keydown={keyEventWrap(() => ($node_selected = dep))}
 									>
-										{dep.name}
+										{dep.data.node.name}
 									</div>
 								{/each}
 							</InspectCard>
 
-							<InspectCard title="Reverse dependencies">
-								{#each find_deps($node_selected, true) as dep, idx}
+							<InspectCard title="Output Nodes">
+								{#each $node_selected.data.output_refs as dep, idx}
 									<div
 										class="break-after-auto hover:font-medium cursor-pointer"
 										on:click={() => ($node_selected = dep)}
+										on:keydown={keyEventWrap(() => ($node_selected = dep))}
 									>
-										{dep.name}
+										{dep.data.node.name}
 									</div>
 								{/each}
 							</InspectCard>
 
-							<InspectCard title="Inputs">
-								<table class="border-separate border-spacing-x-2">
-									<tbody>
-										{#each Object.entries($node_selected.inputs) as [key, value], idx (key)}
-											<tr class="even:bg-slate-100">
-												<td class="font-light">{key}</td>
-												<td
-													style="white-space: pre-wrap; display: block; max-height: 10rem; overflow: auto;"
-												>
-													{value}
-												</td>
-											</tr>
-										{/each}
-									</tbody>
-								</table>
+							<InspectCard title="Input Data">
+								<ObjInspectTable value={$node_selected.data.node.inputs} />
 							</InspectCard>
-							<InspectCard title="Outputs">
-								<table class="border-separate border-spacing-x-2">
-									<tbody>
-										{#each Object.entries($node_selected.outputs) as [key, value], idx (key)}
-											<tr class="even:bg-slate-100">
-												<td class="font-light">{key}</td>
-												<td
-													style="white-space: pre-wrap; display: block; max-height: 10rem; overflow: auto;"
-												>
-													{value}
-												</td>
-											</tr>
-										{/each}
-									</tbody>
-								</table>
+							<InspectCard title="Output Data">
+								<ObjInspectTable value={$node_selected.data.node.outputs} />
 							</InspectCard>
 						</div>
 					{:else}

@@ -12,7 +12,6 @@ export interface WfNodeData {
     outputs: any
     nodes: WfNodeData[]
     edges: WfEdgeData[]
-    parent?: WfNodeData
 }
 
 export interface WfData {
