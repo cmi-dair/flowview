@@ -3,6 +3,7 @@ import type { WfData, WfNodeData } from './types';
 import type { WfTree } from './wftree';
 import { wf_to_tree } from './wftree';
 
+export const PlotlyLib = writable<any>(null);
 
 export const wf_raw = writable<WfData | undefined>(undefined);
 

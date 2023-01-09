@@ -3,13 +3,13 @@
 	import WfNode from '../lib/WfNode.svelte';
 	import InspectCard from '../lib/InspectCard.svelte';
 	import SearchBar from '../lib/SearchBar.svelte';
+	import AdjecencyPlot from '../lib/AdjecencyPlot.svelte';
 	import { wf_raw, wf_data, node_selected } from '../lib/stores';
-	import { type WfTree, filter_node_copy, load_workflow } from '../lib/wftree';
-    import { keyEventWrap } from '../lib/utils';
+	import { type WfTree, filter_node_copy, load_workflow, adjecency_graph } from '../lib/wftree';
+	import { keyEventWrap } from '../lib/utils';
 
-	import { DateTime } from 'luxon'
+	import { DateTime } from 'luxon';
 	import ObjInspectTable from '$lib/ObjInspectTable.svelte';
-
 
 	let files: any;
 
@@ -36,7 +36,6 @@
 
 	$: root_filtered = $wf_data ? filter_node_copy($wf_data, search) : undefined;
 	$: meta_datetime = $wf_raw ? DateTime.fromISO($wf_raw.meta.time) : undefined;
-	
 </script>
 
 <div class="flex flex-col h-screen p-0 my-0 mx-2">
@@ -82,8 +81,8 @@
 						<div>
 							{#each $node_selected.find_parents() as parent}
 								<span
-								    on:click={() => ($node_selected = parent)}
-								    on:keydown={keyEventWrap(() => ($node_selected = parent))}
+									on:click={() => ($node_selected = parent)}
+									on:keydown={keyEventWrap(() => ($node_selected = parent))}
 									class="font-light text-slate-600 hover:text-black hover:font-medium cursor-pointer"
 									>{parent.data.node.name}</span
 								>
@@ -123,6 +122,11 @@
 							<InspectCard title="Output Data">
 								<ObjInspectTable value={$node_selected.data.node.outputs} />
 							</InspectCard>
+							{#if $node_selected.data.node.type === 'workflow'}
+								<InspectCard title="Adjecency" free_height={true}>
+									<AdjecencyPlot node={$node_selected} />
+								</InspectCard>
+							{/if}
 						</div>
 					{:else}
 						<h2 class="text-3xl text-semibold text-center pt-4">Click on a node!</h2>

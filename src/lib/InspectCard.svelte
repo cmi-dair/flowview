@@ -1,10 +1,11 @@
 <script lang="ts">
     export let title = '';
+    export let free_height: boolean = false;
 </script>
 
 <div class="rounded-md border shadow-md p-2 m-2">
     <h2 class="font-medium mb-1">{title}</h2>
-    <div class="max-h-60 overflow-auto">
+    <div class="{free_height ? '': 'max-h-80 overflow-auto'}">
         <slot/>
     </div>
 </div>

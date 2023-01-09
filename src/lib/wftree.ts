@@ -1,5 +1,5 @@
-import {TreeNode} from './tree'
-import type {WfData, WfEdgeData, WfNodeData} from './types'
+import { TreeNode } from './tree'
+import type { WfData, WfEdgeData, WfNodeData } from './types'
 
 
 export function load_workflow(workflow_json: string) {
@@ -15,7 +15,7 @@ interface WfRefs {
     node: WfNodeData
     input_refs: TreeNode<WfRefs>[]
     output_refs: TreeNode<WfRefs>[]
-    lookup: {[key: string]: TreeNode<WfRefs> }
+    lookup: { [key: string]: TreeNode<WfRefs> }
 }
 
 export type WfTree = TreeNode<WfRefs>;
@@ -47,7 +47,7 @@ export function wf_to_tree(node: WfNodeData): WfTree {
         lookup: {}
     });
     tnode.add_children(node.nodes.map((n) => wf_to_tree(n)));
-    
+
     tnode.data.lookup = make_wf_lookup(tnode)
     resolve_edges(tnode);
     return tnode;
@@ -72,4 +72,29 @@ export function filter_node_copy(node: WfTree, search_str: string): WfTree {
     }
     const ret = node.deep_copy();
     return filter_node(ret, search_str.toLocaleLowerCase());
+}
+
+// Utils
+
+function array2d<T>(x: number, y: number, fill: T): T[][] {
+    return [...Array(x)].map(_ => Array(y).fill(fill));
+}
+
+export function adjecency_graph(node: WfTree) {
+    const node_index_lookup = Object.fromEntries(node.data.node.nodes.map((n, idx) => [n.fullname, idx]));
+    const all_nodes = node.data.node.nodes.map((n) => n.name);
+
+    const mat = array2d(all_nodes.length, all_nodes.length, 0);
+
+    node.data.node.nodes.map((_, idx) => mat[idx][idx] = 0.5)
+
+    node.data.node.edges.map((edge) => {
+        mat[node_index_lookup[edge.fullname_origin]][node_index_lookup[edge.fullname_target]] = 1;
+    });
+
+    return {
+        x: all_nodes,
+        y: all_nodes,
+        z: mat
+    };
 }
