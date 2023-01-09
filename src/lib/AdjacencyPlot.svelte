@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Plotly from '../lib/Plotly.svelte';
-	import { type WfTree, adjecency_graph } from '../lib/wftree';
+	import Plotly from './Plotly.svelte';
+	import { type WfTree, adjacency_graph } from './wftree';
 
 	export let node: WfTree | undefined;
 
@@ -8,7 +8,7 @@
 	let adj_data_layout: any;
 	$: {
 		if (node) {
-			adj_data_plotly = adjecency_graph(node);
+			adj_data_plotly = adjacency_graph(node);
 
 			Object.assign(adj_data_plotly, {
 				type: 'heatmap',

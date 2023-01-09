@@ -3,9 +3,9 @@
 	import WfNode from '../lib/WfNode.svelte';
 	import InspectCard from '../lib/InspectCard.svelte';
 	import SearchBar from '../lib/SearchBar.svelte';
-	import AdjecencyPlot from '../lib/AdjecencyPlot.svelte';
+	import AdjacencyPlot from '../lib/AdjacencyPlot.svelte';
 	import { wf_raw, wf_data, node_selected } from '../lib/stores';
-	import { type WfTree, filter_node_copy, load_workflow, adjecency_graph } from '../lib/wftree';
+	import { type WfTree, filter_node_copy, load_workflow } from '../lib/wftree';
 	import { keyEventWrap } from '../lib/utils';
 
 	import { DateTime } from 'luxon';
@@ -123,8 +123,8 @@
 								<ObjInspectTable value={$node_selected.data.node.outputs} />
 							</InspectCard>
 							{#if $node_selected.data.node.type === 'workflow'}
-								<InspectCard title="Adjecency" free_height={true}>
-									<AdjecencyPlot node={$node_selected} />
+								<InspectCard title="Adjacency" free_height={true}>
+									<AdjacencyPlot node={$node_selected} />
 								</InspectCard>
 							{/if}
 						</div>

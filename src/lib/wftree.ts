@@ -80,7 +80,7 @@ function array2d<T>(x: number, y: number, fill: T): T[][] {
     return [...Array(x)].map(_ => Array(y).fill(fill));
 }
 
-export function adjecency_graph(node: WfTree) {
+export function adjacency_graph(node: WfTree) {
     const node_index_lookup = Object.fromEntries(node.data.node.nodes.map((n, idx) => [n.fullname, idx]));
     const all_nodes = node.data.node.nodes.map((n) => n.name);
 
