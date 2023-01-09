@@ -19,7 +19,7 @@
 					[1, '#000']
 				],
 				showscale: false,
-				hovertemplate: '%{x}<br>&#8595;<br>%{y}<br>%{z}' //&#8594; , &#8595;
+				hovertemplate: '%{y}<br>&#8595;<br>%{x}<br>%{z}<extra></extra>' // extra-tag removes trace 0 label
 			});
 			const nnodes = node.data.node.nodes.length;
 			adj_data_plotly = adj_data_plotly;
