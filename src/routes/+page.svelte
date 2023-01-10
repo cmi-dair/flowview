@@ -92,36 +92,40 @@
 						<h2 class="text-xl font-medium">{$node_selected.data.node.name}</h2>
 
 						<div class="flex flex-col overflow-auto">
-							<InspectCard title="Input Nodes">
-								{#each $node_selected.data.input_refs as dep, idx}
-									<div
-										class="break-after-auto hover:font-medium cursor-pointer"
-										on:click={() => ($node_selected = dep)}
-										on:keydown={keyEventWrap(() => ($node_selected = dep))}
-									>
-										{dep.data.node.name}
-									</div>
-								{/each}
-							</InspectCard>
+							<div class="flex flex-row">
+								<InspectCard title="Input Nodes">
+									{#each $node_selected.data.input_refs as dep, idx}
+										<div
+											class="break-after-auto hover:font-medium cursor-pointer"
+											on:click={() => ($node_selected = dep)}
+											on:keydown={keyEventWrap(() => ($node_selected = dep))}
+										>
+											{dep.data.node.name}
+										</div>
+									{/each}
+								</InspectCard>
 
-							<InspectCard title="Output Nodes">
-								{#each $node_selected.data.output_refs as dep, idx}
-									<div
-										class="break-after-auto hover:font-medium cursor-pointer"
-										on:click={() => ($node_selected = dep)}
-										on:keydown={keyEventWrap(() => ($node_selected = dep))}
-									>
-										{dep.data.node.name}
-									</div>
-								{/each}
-							</InspectCard>
+								<InspectCard title="Output Nodes">
+									{#each $node_selected.data.output_refs as dep, idx}
+										<div
+											class="break-after-auto hover:font-medium cursor-pointer"
+											on:click={() => ($node_selected = dep)}
+											on:keydown={keyEventWrap(() => ($node_selected = dep))}
+										>
+											{dep.data.node.name}
+										</div>
+									{/each}
+								</InspectCard>
+							</div>
 
-							<InspectCard title="Input Data">
-								<ObjInspectTable value={$node_selected.data.node.inputs} />
-							</InspectCard>
-							<InspectCard title="Output Data">
-								<ObjInspectTable value={$node_selected.data.node.outputs} />
-							</InspectCard>
+							<div class="flex flex-row">
+								<InspectCard title="Input Data">
+									<ObjInspectTable value={$node_selected.data.node.inputs} />
+								</InspectCard>
+								<InspectCard title="Output Data">
+									<ObjInspectTable value={$node_selected.data.node.outputs} />
+								</InspectCard>
+							</div>
 							{#if $node_selected.data.node.type === 'workflow'}
 								<InspectCard title="Adjacency" free_height={true}>
 									<AdjacencyPlot node={$node_selected} />
