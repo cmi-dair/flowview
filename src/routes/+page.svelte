@@ -10,6 +10,7 @@
 
 	import { DateTime } from 'luxon';
 	import ObjInspectTable from '$lib/ObjInspectTable.svelte';
+	import { random_emoji } from '$lib/random-emoji';
 
 	let files: any;
 
@@ -41,7 +42,7 @@
 
 <div class="flex flex-col h-screen p-0 my-0 mx-2">
 	<div class="text-xl mt-2 flex flex-row items-baseline">
-		<span class="font-medium">&#129497; FlowView</span>
+		<span class="font-medium">{random_emoji()} FlowView</span>
 		{#if $wf_raw}
 			<span class="mx-2">&minus;</span>
 			<span class="font-light">{$wf_raw.meta.pipeline_name}</span>
