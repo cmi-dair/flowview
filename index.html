@@ -2,19 +2,20 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="/flowview/favicon.png" />
+		<link rel="icon" href="./flowview/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content="">
-		<link href="/flowview/_app/immutable/assets/_layout-64c09b75.css" rel="stylesheet">
-		<link href="/flowview/_app/immutable/assets/_page-799e441a.css" rel="stylesheet">
-		<link rel="modulepreload" href="/flowview/_app/immutable/start-f6e22387.js">
-		<link rel="modulepreload" href="/flowview/_app/immutable/chunks/index-729ccc3b.js">
-		<link rel="modulepreload" href="/flowview/_app/immutable/chunks/singletons-6ad18dcc.js">
-		<link rel="modulepreload" href="/flowview/_app/immutable/chunks/index-cce3314d.js">
-		<link rel="modulepreload" href="/flowview/_app/immutable/components/pages/_layout.svelte-22449267.js">
-		<link rel="modulepreload" href="/flowview/_app/immutable/modules/pages/_layout.ts-9cbb603b.js">
-		<link rel="modulepreload" href="/flowview/_app/immutable/chunks/_layout-da46b06b.js">
-		<link rel="modulepreload" href="/flowview/_app/immutable/components/pages/_page.svelte-e52a0a87.js">
+		<link href="./flowview/_app/immutable/assets/_layout.7589e135.css" rel="stylesheet">
+		<link href="./flowview/_app/immutable/assets/_page.799e441a.css" rel="stylesheet">
+		<link rel="modulepreload" href="./flowview/_app/immutable/entry/start.c3face21.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/chunks/index.c33e9e43.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/chunks/singletons.89afa2c3.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/chunks/index.b202c061.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/entry/app.2a9bbc0a.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/entry/_layout.svelte.13f05df2.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/entry/_layout.ts.984db11e.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/chunks/_layout.da46b06b.js">
+		<link rel="modulepreload" href="./flowview/_app/immutable/entry/_page.svelte.a8152102.js">
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">
@@ -30,21 +31,31 @@
 	</div>
 
 
-		<script type="module" data-sveltekit-hydrate="hzd9uo">
-			import { start } from "/flowview/_app/immutable/start-f6e22387.js";
+			
+			<script>
+				{
+					__sveltekit_63j3pt = {
+						env: {},
+						assets: "/flowview",
+						base: new URL("./flowview", location).pathname,
+						element: document.currentScript.parentElement
+					};
 
-			start({
-				env: {},
-				paths: {"base":"/flowview","assets":"/flowview"},
-				target: document.querySelector('[data-sveltekit-hydrate="hzd9uo"]').parentNode,
-				version: "1673366563378",
-				hydrate: {
-					node_ids: [0, 2],
-					data: [null,null],
-					form: null
+					const data = [null,null];
+
+					Promise.all([
+						import("./flowview/_app/immutable/entry/start.c3face21.js"),
+						import("./flowview/_app/immutable/entry/app.2a9bbc0a.js")
+					]).then(([kit, app]) => {
+						kit.start(app, __sveltekit_63j3pt.element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
 				}
-			});
-		</script>
-	</div>
+			</script>
+		</div>
 	</body>
 </html>
