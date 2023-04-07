@@ -15,7 +15,7 @@ export class TreeNode<T> {
     }
 
     public add_children(children: TreeNode<T>[]): void {
-        for (let child of children) {
+        for (const child of children) {
             child.parent = this;
         }
         this.children.push(...children);
@@ -37,6 +37,7 @@ export class TreeNode<T> {
         return clone;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
     public find_parents(include_this: boolean = false): TreeNode<T>[] {
         const parents = [];
         let p: TreeNode<T> | undefined = include_this ? this : this.parent;

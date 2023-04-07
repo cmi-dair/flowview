@@ -23,7 +23,7 @@ export type WfTree = TreeNode<WfRefs>;
 // Make lookup tables
 
 function make_wf_lookup(node: WfTree) {
-    return Object.fromEntries(node.children.map((n) => [n.data.node.fullname, n]));
+    return Object.fromEntries(node.children.map((n) => [n.data.node.name, n]));
 }
 
 
@@ -32,8 +32,8 @@ function make_wf_lookup(node: WfTree) {
 
 function resolve_edges(node: WfTree) {
     node.data.node.edges.map((e) => {
-        const node_o = node.data.lookup[e.fullname_origin];
-        const node_t = node.data.lookup[e.fullname_target];
+        const node_o = node.data.lookup[e.origin];
+        const node_t = node.data.lookup[e.target];
         node_o.data.output_refs.push(node_t);
         node_t.data.input_refs.push(node_o);
     })
@@ -81,7 +81,7 @@ function array2d<T>(x: number, y: number, fill: T): T[][] {
 }
 
 export function adjacency_graph(node: WfTree) {
-    const node_index_lookup = Object.fromEntries(node.data.node.nodes.map((n, idx) => [n.fullname, idx]));
+    const node_index_lookup = Object.fromEntries(node.data.node.nodes.map((n, idx) => [n.name, idx]));
     const all_nodes = node.data.node.nodes.map((n) => n.name);
 
     const mat = array2d(all_nodes.length, all_nodes.length, 0);
@@ -89,7 +89,7 @@ export function adjacency_graph(node: WfTree) {
     node.data.node.nodes.map((_, idx) => mat[idx][idx] = 0.5)
 
     node.data.node.edges.map((edge) => {
-        mat[node_index_lookup[edge.fullname_origin]][node_index_lookup[edge.fullname_target]] = 1;
+        mat[node_index_lookup[edge.origin]][node_index_lookup[edge.target]] = 1;
     });
 
     return {
@@ -97,4 +97,12 @@ export function adjacency_graph(node: WfTree) {
         y: all_nodes,
         z: mat
     };
+}
+
+export function count_nodes(node: WfTree) {
+    let count = 1;
+    for (const child of node.children) {
+        count += count_nodes(child);
+    }
+    return count;
 }

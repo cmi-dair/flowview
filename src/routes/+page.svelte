@@ -5,7 +5,7 @@
 	import SearchBar from '../lib/SearchBar.svelte';
 	import AdjacencyPlot from '../lib/AdjacencyPlot.svelte';
 	import { wf_raw, wf_data, node_selected } from '../lib/stores';
-	import { type WfTree, filter_node_copy, load_workflow } from '../lib/wftree';
+	import { type WfTree, filter_node_copy, load_workflow, count_nodes } from '../lib/wftree';
 	import { keyEventWrap } from '../lib/utils';
 
 	import { DateTime } from 'luxon';
@@ -25,6 +25,7 @@
 			if (wf_new) {
 				console.log('Load workflow:', file.name);
 				$wf_raw = wf_new;
+				$node_selected = undefined;
 			} else {
 				alert('Not a valid workflow file! ' + file.name);
 			}
@@ -74,6 +75,8 @@
 				<div class="my-2 flex-auto h-full overflow-auto">
 					<WfNode wf_node={root_filtered} />
 				</div>
+
+				Nodes: {count_nodes(root_filtered)}
 			</div>
 			<div class="col-span-4 h-full overflow-auto">
 				<div class="flex flex-col h-full overflow-auto">
@@ -126,7 +129,51 @@
 									<ObjInspectTable value={$node_selected.data.node.outputs} />
 								</InspectCard>
 							</div>
-							{#if $node_selected.data.node.type === 'workflow'}
+							{#if $node_selected.data.node.result}
+								<div class="flex flex-row">
+									<InspectCard title="Result Input Data">
+										<ObjInspectTable value={$node_selected.data.node.result.inputs} />
+									</InspectCard>
+									<InspectCard title="Result Output Data">
+										<ObjInspectTable value={$node_selected.data.node.result.outputs} />
+									</InspectCard>
+								</div>
+								<div class="flex flex-row">
+									<InspectCard title="Execution">
+										<table class="border-separate border-spacing-x-2 font-mono">
+											<tbody>
+												<tr class="even:bg-slate-100">
+													<td class="font-light overflow-auto" style="max-width: 14rem;">WD path</td
+													>
+													<td
+														class="overflow-auto whitespace-pre-wrap overflow-auto block"
+														style="max-height: 10rem;"
+													>
+														{$node_selected.data.node.result.wd_path}
+													</td>
+												</tr>
+												{#if $node_selected.data.node.result.command_txt}
+													<tr class="even:bg-slate-100">
+														<td class="font-light overflow-auto" style="max-width: 14rem;"
+															>Command</td
+														>
+														<td
+															class="overflow-auto whitespace-pre-wrap overflow-auto block"
+															style="max-height: 10rem;"
+														>
+															{$node_selected.data.node.result.command_txt}
+														</td>
+													</tr>
+												{/if}
+											</tbody>
+										</table>
+									</InspectCard>
+									<InspectCard title="Runtime info">
+										<ObjInspectTable value={$node_selected.data.node.result.runtime_info} />
+									</InspectCard>
+								</div>
+							{/if}
+							{#if $node_selected.data.node.type !== 'node'}
 								<InspectCard title="Adjacency" free_height={true}>
 									<AdjacencyPlot node={$node_selected} />
 								</InspectCard>

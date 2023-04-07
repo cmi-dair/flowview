@@ -1,15 +1,22 @@
 export interface WfEdgeData {
-    fullname_origin: string
-    fullname_target: string
+    origin: string
+    target: string
+}
+export interface WfNodeResultData {
+    inputs: Record<string, string>
+    outputs: Record<string, string>
+    runtime_info: Record<string, string>
+    wd_path: string
+    read_success: boolean
+    command_txt: string | null
 }
 
 export interface WfNodeData {
     name: string
-    fullname: string
     type: string //'node' | 'workflow'
-    repr: string
-    inputs: any
-    outputs: any
+    inputs: Record<string, string>
+    outputs: Record<string, string>
+    result: WfNodeResultData | null
     nodes: WfNodeData[]
     edges: WfEdgeData[]
 }
