@@ -11,8 +11,10 @@
 	import { DateTime } from 'luxon';
 	import ObjInspectTable from '$lib/ObjInspectTable.svelte';
 	import { random_emoji } from '$lib/random-emoji';
+	import UpstreamTree from '$lib/UpstreamTree.svelte';
 
 	let files: any;
+	let max_depth_updownstream = 4;
 
 	function on_file_selected(e: Event) {
 		if (!e.target) return;
@@ -119,6 +121,16 @@
 											{dep.data.node.name}
 										</div>
 									{/each}
+								</InspectCard>
+							</div>
+
+							<div class="flex flex-row">
+								<InspectCard title="Upstream (depth {max_depth_updownstream})">
+									<UpstreamTree wf_node={$node_selected} max_level={max_depth_updownstream} />
+								</InspectCard>
+
+								<InspectCard title="Downstream (depth {max_depth_updownstream})">
+									<UpstreamTree wf_node={$node_selected} tree_type='downstream' max_level={max_depth_updownstream} />
 								</InspectCard>
 							</div>
 

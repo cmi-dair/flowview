@@ -2,6 +2,7 @@ export interface WfEdgeData {
     origin: string
     target: string
 }
+
 export interface WfNodeResultData {
     inputs: Record<string, string>
     outputs: Record<string, string>
@@ -13,7 +14,7 @@ export interface WfNodeResultData {
 
 export interface WfNodeData {
     name: string
-    type: string //'node' | 'workflow'
+    type: string
     inputs: Record<string, string>
     outputs: Record<string, string>
     result: WfNodeResultData | null
