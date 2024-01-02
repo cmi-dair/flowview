@@ -5,13 +5,13 @@
 	import SearchBar from '../lib/SearchBar.svelte';
 	import AdjacencyPlot from '../lib/AdjacencyPlot.svelte';
 	import { wf_raw, wf_data, node_selected } from '../lib/stores';
-	import { type WfTree, filter_node_copy, load_workflow, count_nodes } from '../lib/wftree';
+	import { filter_node_copy, load_workflow, count_nodes } from '../lib/wftree';
 	import { keyEventWrap } from '../lib/utils';
 
 	import { DateTime } from 'luxon';
 	import ObjInspectTable from '$lib/ObjInspectTable.svelte';
-	import { random_emoji } from '$lib/random-emoji';
 	import UpstreamTree from '$lib/UpstreamTree.svelte';
+	import ExamplesDropdown from '$lib/ExamplesDropdown.svelte';
 
 	let files: any;
 	let max_depth_updownstream = 4;
@@ -44,7 +44,7 @@
 
 <div class="flex flex-col h-screen p-0 my-0 mx-2">
 	<div class="text-xl mt-2 flex flex-row items-baseline">
-		<span class="font-medium">{random_emoji()} FlowView</span>
+		<span class="font-medium">FlowView</span>
 		{#if $wf_raw}
 			<span class="mx-2">&minus;</span>
 			<span class="font-light">{$wf_raw.meta.pipeline_name}</span>
@@ -54,6 +54,8 @@
 		{/if}
 
 		<div class="flex-1" />
+		
+		<ExamplesDropdown />
 
 		<input
 			type="file"
@@ -61,7 +63,7 @@
 			on:change={on_file_selected}
 			bind:this={files}
 			class="text-sm text-grey-500
-		 file:mr-5 file:py-2 file:px-6
+		 file:mx-5 file:py-2 file:px-6
 		 file:rounded-full file:border-0
 		 file:text-sm file:font-medium
 		 file:bg-blue-50 file:text-blue-700

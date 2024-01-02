@@ -15,6 +15,7 @@ jobs:
         run: |
           npm install
           npm run build
+          cp -r examples build/examples
           touch build/.nojekyll
           
       - name: Deploy to GitHub Pages
