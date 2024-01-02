@@ -15,7 +15,7 @@
 
 	// load /examples/index.json
 	const examples: Promise<Examples> = (async () => {
-		const response = await fetch('/examples/index.json');
+		const response = await fetch('examples/index.json');
 		const response_json = (await response.json()) as Examples;
 		response_json.examples.sort((a, b) => a.title.localeCompare(b.title));
 		return response_json;
@@ -24,7 +24,7 @@
 	function load_example(example: Example) {
 		console.log('Load example:', example);
 
-		fetch(`/examples/files/${example.file}`)
+		fetch(`examples/files/${example.file}`)
 			.then((response) => response.text())
 			.then((text) => {
 				const wf_new = load_workflow(text);
