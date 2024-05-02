@@ -54,7 +54,7 @@
 		{/if}
 
 		<div class="flex-1" />
-		
+
 		<ExamplesDropdown />
 
 		<input
@@ -132,7 +132,11 @@
 								</InspectCard>
 
 								<InspectCard title="Downstream (depth {max_depth_updownstream})">
-									<UpstreamTree wf_node={$node_selected} tree_type='downstream' max_level={max_depth_updownstream} />
+									<UpstreamTree
+										wf_node={$node_selected}
+										tree_type="downstream"
+										max_level={max_depth_updownstream}
+									/>
 								</InspectCard>
 							</div>
 

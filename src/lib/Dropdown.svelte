@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let title = 'Dropdown';
 	let expanded = false;
-    export const toggle = () => (expanded = !expanded);
+	export const toggle = () => (expanded = !expanded);
 </script>
 
 <div>
@@ -34,6 +34,6 @@
 		class:hidden={!expanded}
 		class="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
 	>
-        <slot />
+		<slot />
 	</div>
 </div>
