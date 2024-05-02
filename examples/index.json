@@ -1,54 +1,54 @@
 {
-    "examples": [
-        {
-            "title": "Rodent",
-            "file": "workflow_pre_2024-01-02_12-06-55_pipeline_analysis.json",
-            "stage": "pre"
-        },
-        {
-            "title": "CCS",
-            "file": "workflow_pre_2024-01-02_12-06-56_pipeline_cpac_ccs-options.json",
-            "stage": "pre"
-        },
-        {
-            "title": "FMRIprep",
-            "file": "workflow_pre_2024-01-02_12-06-56_pipeline_cpac_fmriprep-options.json",
-            "stage": "pre"
-        },
-        {
-            "title": "NDMG",
-            "file": "workflow_pre_2024-01-02_12-06-56_pipeline_ndmg.json",
-            "stage": "pre"
-        },
-        {
-            "title": "Default",
-            "file": "workflow_pre_2024-01-02_12-06-57_pipeline_cpac-default-pipeline.json",
-            "stage": "pre"
-        },
-        {
-            "title": "FX",
-            "file": "workflow_pre_2024-01-02_12-06-57_pipeline_cpac_fx-options.json",
-            "stage": "pre"
-        },
-        {
-            "title": "RBC",
-            "file": "workflow_pre_2024-01-02_12-06-57_pipeline_RBCv0.json",
-            "stage": "pre"
-        },
-        {
-            "title": "ABCD",
-            "file": "workflow_pre_2024-01-02_12-06-58_pipeline_cpac_abcd-options.json",
-            "stage": "pre"
-        },
-        {
-            "title": "Benchmark FNIRT",
-            "file": "workflow_pre_2024-01-02_12-07-03_pipeline_benchmark-FNIRT.json",
-            "stage": "pre"
-        },
-        {
-            "title": "Monkey",
-            "file": "workflow_pre_2024-01-02_12-08-16_pipeline_cpac_default_monkey_skullstrip.json",
-            "stage": "pre"
-        }
-    ]
+	"examples": [
+		{
+			"title": "Rodent",
+			"file": "workflow_pre_2024-01-02_12-06-55_pipeline_analysis.json",
+			"stage": "pre"
+		},
+		{
+			"title": "CCS",
+			"file": "workflow_pre_2024-01-02_12-06-56_pipeline_cpac_ccs-options.json",
+			"stage": "pre"
+		},
+		{
+			"title": "FMRIprep",
+			"file": "workflow_pre_2024-01-02_12-06-56_pipeline_cpac_fmriprep-options.json",
+			"stage": "pre"
+		},
+		{
+			"title": "NDMG",
+			"file": "workflow_pre_2024-01-02_12-06-56_pipeline_ndmg.json",
+			"stage": "pre"
+		},
+		{
+			"title": "Default",
+			"file": "workflow_pre_2024-01-02_12-06-57_pipeline_cpac-default-pipeline.json",
+			"stage": "pre"
+		},
+		{
+			"title": "FX",
+			"file": "workflow_pre_2024-01-02_12-06-57_pipeline_cpac_fx-options.json",
+			"stage": "pre"
+		},
+		{
+			"title": "RBC",
+			"file": "workflow_pre_2024-01-02_12-06-57_pipeline_RBCv0.json",
+			"stage": "pre"
+		},
+		{
+			"title": "ABCD",
+			"file": "workflow_pre_2024-01-02_12-06-58_pipeline_cpac_abcd-options.json",
+			"stage": "pre"
+		},
+		{
+			"title": "Benchmark FNIRT",
+			"file": "workflow_pre_2024-01-02_12-07-03_pipeline_benchmark-FNIRT.json",
+			"stage": "pre"
+		},
+		{
+			"title": "Monkey",
+			"file": "workflow_pre_2024-01-02_12-08-16_pipeline_cpac_default_monkey_skullstrip.json",
+			"stage": "pre"
+		}
+	]
 }
